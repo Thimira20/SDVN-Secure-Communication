@@ -65,6 +65,8 @@ def generate_keypair():
 def pub_to_pem(pub_key: EllipticCurvePublicKey) -> str:
     """
     Serialise an EllipticCurvePublicKey to a PEM string for network transmission.
+    A PEM (Privacy-Enhanced Mail) string is a base64-encoded format used to securely
+     store and transmit cryptographic keys, certificates,
 
     Security role:
         - Public keys must be shared during handshakes (ephemeral ECDH pub,
@@ -206,7 +208,9 @@ def aes_gcm_encrypt(key: bytes, plaintext: bytes, aad: bytes = b"") -> dict:
                             will cause decryption to fail (InvalidTag).
         - AAD (Additional Authenticated Data): integrity-protected but
           NOT encrypted (e.g. packet headers that need to be readable
-          but must not be tampered with).
+          but must not be tampered with,still want to ensure that an attacker hasn't maliciously modified it.
+
+        AAD is data that gets included in the mathematical calculation for the authentication tag, but is NOT encrypted.).
         - Nonce: 96-bit random value — MUST be unique per encryption.
 
     Args:
@@ -279,6 +283,10 @@ def ecdsa_sign(priv_key: EllipticCurvePrivateKey, data_bytes: bytes) -> str:
 
     Returns:
         str: base64-encoded DER-encoded ECDSA signature
+
+    hashes.SHA256(): First, take the data and run it through the SHA-256 hashing algorithm. This acts like a meat grinder, 
+    crushing any amount of data down into a unique, fixed 32-byte fingerprint.
+    ec.ECDSA(...): Second, take that 32-byte fingerprint and apply the Elliptic Curve Digital Signature math to it using your private key.
     """
     sig = priv_key.sign(data_bytes, ec.ECDSA(hashes.SHA256()))
     return base64.b64encode(sig).decode()
@@ -434,6 +442,16 @@ def parse_packet(raw_bytes: bytes) -> dict:
 
 def canonical_json(obj: dict) -> bytes:
     """
+    Why canonical_json is so important for Cryptography: If Vehicle 1 serialises the dictionary as 
+    {"speed": 55, "braking": false} and signs those exact bytes, but Vehicle 2 parses it and reconstructs 
+    it internally as {"braking": false, "speed": 55} (flipped order), the bytes have changed! If Vehicle 2 tries to 
+    verify the signature on the flipped bytes, it will fail.
+
+    canonical_json forces the dictionary to always sort its keys alphabetically before serialising, guaranteeing both
+    vehicles generate the exact same byte string for the math checks
+
+
+
     Produce deterministic, sorted-key JSON bytes suitable for signing.
 
     Security role:
