@@ -1,0 +1,109 @@
+.page { padding: 100px 0 60px; }
+
+.header {
+  margin-bottom: 64px;
+}
+
+.channelSection {
+  margin-bottom: 80px;
+  scroll-margin-top: 80px;
+}
+
+.chHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+.chIcon { font-size: 40px; flex-shrink: 0; margin-top: 4px; }
+.chName { font-size: 22px; font-weight: 800; }
+.chParties { font-size: 13px; font-family: var(--font-mono); margin-bottom: 10px; }
+.chDesc { font-size: 15px; color: var(--text-secondary); line-height: 1.65; max-width: 680px; }
+
+.chBody {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+.colTitle {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+}
+
+/* Steps */
+.steps { display: flex; flex-direction: column; gap: 12px; }
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+.stepNum {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+.stepContent { flex: 1; min-width: 0; }
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.stepParty {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+.stepLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.stepDesc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+/* Props */
+.propsList { display: flex; flex-direction: column; gap: 10px; }
+.propItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+.propCheck { font-size: 16px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.propName { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+.propDetail { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+
+.stepsCol {}
+.propsCol {}
+
+@media (max-width: 900px) {
+  .chBody { grid-template-columns: 1fr; }
+}
